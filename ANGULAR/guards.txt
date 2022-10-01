@@ -1,7 +1,8 @@
 https://levelup.gitconnected.com/route-guards-angular-1ea6e596ce65
 
-Guards are processed in the following order:
+ng g g [name]
 
+Guards are processed in the following order:
 canDeactivate
 canLoad
 canActivateChild

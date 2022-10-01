@@ -1,0 +1,80 @@
+https://indepth.dev/tutorials/angular/angular-pipes-complete-guide
+
+ng g p [name]
+
+Built-in Pipes
+
+- UpperCasePipe/LowerCasePipe: Transforms text to all upper/lower case.
+- CurrencyPipe: Transforms a number to a currency string, formatted according to locale rules.
+- DecimalPipe: Transforms a number into a string with a decimal point, formatted according to locale rules.
+- PercentPipe: Transforms a number to a percentage string, formatted according to locale rules.
+
+Date pipe
+
+<h1>
+   My birthday is {{ birthday | date: 'shortDate' }}
+   My birthday is {{ birthday | date: 'dd/MM/yyyy' }}
+</h1
+
+
+///////////////////
+// age.pipe.ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+//New empty pipe
+@Pipe({
+ name: 'age'
+})
+export class AgePipe implements PipeTransform {
+
+ transform(value: any, ...args: any[]): any {
+   return null;
+ }
+}
+
+// age.pipe.ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'age',
+})
+export class AgePipe implements PipeTransform {
+
+  transform(value: Date): any {
+     const currentYear = new Date().getFullYear();
+     const dobYear = value.getFullYear();     
+     const age = currentYear - dobYear;
+
+     return age + ' years old';
+  }
+}
+
+<>
+<!-- app.component.html -->
+<h1>
+  My age is {{ birthday | age }}
+</h1>
+
+//We can add more input parameters:
+
+transform(value: Date, capitalize: boolean = false, withEmojis: boolean = false): any {...
+
+ My age is {{ birthday | age: true: true }}
+
+
+Pure-and-Impure-pipes
+
+
+A pure pipe (the default) 
+is only called when Angular detects a change in the value or the parameters passed to a pipe.
+
+An impure pipe 
+is called for every change detection cycle no matter whether the value or parameter(s) changes.
+
+We can force Angular to re-calculate our pipe whenever we change the data on the page
+ (eg, adding a new name to the list). But be aware that this might lead to performance issues.
+ 
+@Pipe({
+   name: 'filter',
+   pure: false // <-- Add this
+})
