@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      /* We also have display: flex and display:grid*/
+
+      #div-1{
+        display:block; /*div - default block */
+        background-color: red;
+      }
+      #span-1{
+        display: none;
+        /*display:inline; span - default inline => minimum width to fit content */
+        background-color: cyan; 
+        /*we cant change width and height of inline element */
+        /* if we want to change a size we have to declare the display property as inline-block*/
+      }
+      #span-2{
+        background-color: purple;
+      }
+      #div-2{
+        
+        background-color: green;
+      }
+      #img{
+        display: inline-block; /*default*/
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="pseudo_elements.css"></link>
+
+  </head>
+  <body>  
+    <div id="div-1">This is a div</div>
+    <span id="span-1">This is a span</span>
+    <img src="https://source.unsplash.com/xfngap_DToE" alt="" id="img">
+    <span id="span-2">This is another span</span>
+    <div id="div-2">This is another div</div>
+  </body>
+</html>
