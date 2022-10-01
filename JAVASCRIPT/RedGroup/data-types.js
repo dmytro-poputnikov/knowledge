@@ -1,3 +1,4 @@
+// @ts-nocheck
 //Data types
 
 //https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/
