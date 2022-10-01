@@ -1,0 +1,155 @@
+https://levelup.gitconnected.com/route-guards-angular-1ea6e596ce65
+
+Guards are processed in the following order:
+
+canDeactivate
+canLoad
+canActivateChild
+canActivate
+resolve
+
+Guard: 
+    import { Injectable } from '@angular/core';
+    import { CanActivate, Router } from '@angular/router';
+
+    @Injectable({
+    providedIn: 'root'
+    })
+    export class AuthGardService implements CanActivate  {
+
+    canActivate(): boolean  {
+        //....
+    }
+    }
+
+And we can  use it:
+    ...
+    import { AuthGuard } from './auth-guard.service.ts';
+    ...
+
+    {
+    path: ':id',
+    component: ArticleDetailComponent,
+    resolve: { article: ArticleResolver },
+    canActivate: [AuthGuard]
+    }
+
+Angular Guards Types
+//!!canActivate (Guard navigation to a route)
+The canActivate is called when the URL changes to the route and 
+matches the route with the Guard. This type of guards is commonly used to:
+
+- Limit route access to specific users
+- Ensure prerequisites are met
+- If you use Angular CLI, you can generate the guard you want with the following command:
+
+ng g g article/auth
+
+//!!canActivateChild (Guard navigation to a child route)
+This guard type is similar to the canActivate guard except that it is 
+called when activating a route child and not the route itself. 
+This guard job is to check the criteria before activating a child route. 
+This type of guards is commonly used when:
+
+- Limit access to child route
+- Ensure prerequisites for the child route are met
+
+//!!!!!!!canDeactivate (Guard navigation away from a route)
+The canDeactivate guard’s job is to check criteria before leaving this time a route. Some common use cases for this type of guard are:
+
+- Check for unsaved changes
+- Confirm leaving an incomplete operation
+- Alert the user
+
+As I said before for this type of guard the CLI doesn’t show it in the guard type to select 
+when using the CLI commands. This is due to the nature of canDeactivate. 
+This type of guard is a bit different, it is a generic interface canDeactivate<T> meaning 
+that it requires a generic parameter. This parameter identifies the component that will use this guard. 
+That’s why CLI doesn’t propose this type of guard to generate it.
+
+Here is an example of how we can use this guard:
+
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { EditArticleComponent } from './edit-article.component.ts';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EditArticleGuard implements CanDeactivate<EditArticleComponent>  {
+
+  canDeactivate(component: EditArticleComponent
+  currentRout: ActivateRouteSnapshot,
+  currentState: RouterStateSnapshot,
+  nextState?: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean>  {
+    //....
+    return true;
+  }
+}
+
+...
+import { EditArticleGuard } from './edit-article.guard.service.ts';
+import { EditArticleomponent } from './edit-article.component.ts';
+...
+
+{
+  path: ':id/edit',
+  component: EditArticleComponent,
+  canDeactivate: [EditArticleGuard],
+  resolve: { article: ArticleResolver }
+},
+
+
+
+//!!!canLoad (Prevent asynchronous routing)
+The canLoad guard is implemented to decide if children can be loaded or not.
+ You might be wondering what’s the difference between the canLoadand the canActivate?
+
+The canLoad guard is implemented to decide if children can be loaded or not. You might be wondering
+what’s the difference between the canLoadand the canActivate?
+
+Well, there is a difference, the canActivate exists to prevent unauthorized users from accessing a route, 
+while canLoad is used to prevent the application from loading an entire module or 
+component in a lazy way (lazy loading) if the user is not authorized.
+So the main advantage of this type of guard is to optimize the app and have better performance.
+
+//!!resolve (Prefetch data before activating a route)
+The last type I’m going to talk about is the resolve guard. 
+This guard allows us data before we navigate to a route. 
+You may say, wait but we can retrieve data in the ngOnInit() life cycle hook, right? 
+I agree but this approach will lead us to see an empty component at the beginning. 
+If your client is okay with an empty component at the opening or a spinner while loading data,
+ that’s okay but if not there is a solution for that which is the resolve guard. 
+ This allows you to render the component along with data.
+
+@Injectable({
+  providedIn: 'root' 
+})
+export class ArticlesListResolver implements Resolve<ArticlesListComponent> {
+  constructor(private articlesService: ArticlesService) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any>|Promise<any>|any {
+    return this.articlesService.getArticles(route.paramMap.get('id'));
+  }
+}
+
+ 
+@NgModule({
+  imports: [
+    RouterModule.forRoot([
+      {
+        path: 'articles/:id',
+        component: ArticlesListComponent,
+        resolve: {
+          articles: ArticlesListResolver
+        }
+      }
+    ])
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
