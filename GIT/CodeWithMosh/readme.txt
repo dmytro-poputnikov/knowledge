@@ -1,3 +1,5 @@
+git log --oneline --all --graph
+
 //new branch
 git checkout -b name
 
@@ -23,4 +25,4 @@ git push
 git pull
 git stash
 
-git log --oneline --all --graph
+
