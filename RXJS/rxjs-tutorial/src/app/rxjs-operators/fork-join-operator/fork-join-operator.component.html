@@ -1,0 +1,24 @@
+<h1>forkJoin Operator</h1>
+<p>
+  We can use multiple observable execution with forkJoin() operator but it waits
+  for all observables to be completed then it only emits the last value from
+  each observable Remember if any of the observable does not complete then the
+  forkJoin() will never complete.
+</p>
+
+<p>
+  This operator is best when you have such scenarios where you want to get the
+  only last value while having group of observable execution.
+</p>
+
+<p>
+  this is not a best choice to used for multiple API calls because there if we
+  have error in any of the API's then if the error is not handle properly it
+  might get you in trouble so it is not considered as a best approach,
+</p>
+
+<p>
+  On that place you can use combineLatest operator and zip operator but if you
+  are not making API hit with forkJoin() for multiple observable executions then
+  forkJoin() operator is best approach.
+</p>
