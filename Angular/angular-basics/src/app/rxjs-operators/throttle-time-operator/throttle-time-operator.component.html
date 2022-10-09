@@ -1,0 +1,11 @@
+<h1>4. throttleTime operator + interval</h1>
+<p>
+  Throttle time operator, can make a delay given to it but first emits value
+  from source observable and it is used to ignore subscription for given time
+  like when we want to hit an API but you want a delay but want to get the
+  latest value emitted from source observable then, ThrottleTime operator can be
+  used. it seems similar to debounceTime operator where it is also make delay
+  for the subscriptions but debounceTime() is only emits the last value emitted
+  in source observable and throttleTime() picks the latest value emitted in the
+  source observable.
+</p>

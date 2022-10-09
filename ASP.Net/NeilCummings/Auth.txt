@@ -1,0 +1,18 @@
+dotnet ef migrations add UserPasswordAdded
+dotnet ef database update
+
+using var hmac = new HMACSHA512(); -> 
+Provides a convenient syntax that ensures the correct use of IDisposable objects.
+The using statement ensures the correct use of IAsyncDisposable objects.
+
+
+[HttpPost("register")]
+ public async Task<ActionResult<AppUser>> Register(string username, string password) => query params
+ {
+
+ }
+
+ In order to receive the properties from the body of the req we have to declare properties as object
+
+
+dotnet ef database drop
