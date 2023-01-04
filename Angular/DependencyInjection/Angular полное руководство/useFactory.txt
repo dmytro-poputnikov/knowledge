@@ -1,0 +1,50 @@
+useFactory
+
+Это вариант, в котором функция регистрируется как результат. Функция выполняет роль фабрики, 
+возвращающей значение зависимости.
+
+providers: [
+    { provide: 'VALUE', useFactory: () => { return 'что-то' } }, 
+    /* Другие провайдеры */
+  ]
+Вариант useFactory отличается от варианта useValue c функцией тем, что когда возвращается функция в useValue, 
+потом с этой функцией необходимо работать как с функцией, а с фабрикой получаем значение, с которым и работаем, 
+и нет повторных вызовов функции.
+
+Для работы фабрики часто необходимо получать зависимости, поэтому предусмотрен механизм передачи зависимостей 
+в функцию фабрики.
+
+Хочу привести «реальный» пример, которой заключается в том, что необходимо получать настройки,
+например, с back-end, а потом зарегистрировать эти настройки в качестве зависимости.
+
+/** Интерфейс конфигурации */
+export interface ISettings
+{
+  /** URL к API для некоторого сервиса My */
+  apiUrlMy: string;
+} 
+
+/** Токен конфигурации */
+export const SETTINGS_TOKEN = new InjectionToken<Observable<ISettings>>('SETTINGS_TOKEN');
+/** Токен для получения URL API */
+export const API_URL_MY_TOKEN = new InjectionToken<Observable<string>>('API_URL_MY_TOKEN'); 
+
+providers: [
+  {
+    provide: SETTINGS_TOKEN,
+
+    useFactory: (http: HttpClient): Observable<ISettings> =>
+      http
+        .get<ISettings>('/assets/settings.json')
+        .pipe(shareReplay()),
+    deps: [HttpClient]
+  },
+  {
+    provide: API_URL_MY_TOKEN,
+    useFactory:
+      (injector: Injector) =>
+        injector.get(SETTINGS_TOKEN).pipe(map(s => s.apiUrlMy)),
+    deps: [Injector]
+  }, 
+  /* Другие провайдеры */
+]

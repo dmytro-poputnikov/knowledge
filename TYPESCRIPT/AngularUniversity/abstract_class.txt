@@ -1,0 +1,24 @@
+//Template for a class
+
+abstract class Course{
+
+    protected constructor(
+        protected _title:string,
+        protected price:number,
+        protected subtitle = ""
+    ) {
+        this.validate();
+    }
+
+    get 
+
+    set 
+
+    static method()
+
+    protected abstract validate(); //child have to implement
+}
+
+we cant :
+const varClass = new Course(...);
+

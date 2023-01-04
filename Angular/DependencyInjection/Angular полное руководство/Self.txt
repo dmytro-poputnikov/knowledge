@@ -1,0 +1,15 @@
+@Self()
+
+ Этот декоратор будет брать зависимость только этого же компонента/директивы/модуля, 
+ в котором требуется получить зависимость. 
+
+ @Component({
+        selector: 'car-di',
+        template: ``
+  // На уровне компонента
+  providers: [OptionsService]
+})
+export class CarComponent
+{
+  constructor(@Self() public options: OptionsService){}
+}

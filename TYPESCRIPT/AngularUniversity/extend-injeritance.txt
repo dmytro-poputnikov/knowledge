@@ -1,0 +1,17 @@
+class Course {...}
+
+class FreeCourse extends Course {
+    constructor( title: string, subtitle = "", creatingDt = new Date(2000,1,1))
+    {
+        super(title,0,subtitle,creatingDt);
+    }
+
+    validate()
+    {
+        console.log(`Called FreeCourse validate()`);
+        //super.validate(); to call from parent
+    }
+
+}
+
+const angular = new FreeCourse("asdasd");

@@ -1,0 +1,9 @@
+useClass – klasy
+
+Możemy skorzystać z tego atrybutu, aby podmienić klasę na jej alternatywną implementację. 
+Przydatne np. w zależności od środowiska lub w trakcie testów jednostkowych:
+
+class DataService { … }  
+class LocalStorageDataService { … }  
+…
+{ provide: DataService, useClass: LocalStorageDataService }

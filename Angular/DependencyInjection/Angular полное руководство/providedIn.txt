@@ -1,0 +1,29 @@
+Такой способ даёт возможность зависимости зарегистрировать саму себя. Зависимость может зарегистрировать себя либо в виде сервиса, помеченного декоратором @Injectable,либо при определении токена InjectionToken.
+
+Таким способом можно зарегистрировать зависимость на уровнях:
+
+'platform'
+
+'root'
+
+'any'
+
+или указать конкретный тип для регистрации, например, компонент или модуль
+
+@Injectable({providedIn: 'root'})
+export class OptionsService { } 
+
+@Injectable({ providedIn: AppModule })
+export class OptionsService { } 
+
+@Injectable({ providedIn: 'any' })
+export class OptionsService { }
+'any' является особым уровнем регистрации. Этот уровень позволяет создавать отдельный экземпляр зависимости для каждого «лениво загружаемого модуля» (lazy-loaded module)
+
+ Обязательно при регистрации токена необходимо указать фабрику
+
+export const API_URL_MY_TOKEN = new InjectionToken<string>('API_URL_MY_TOKEN',
+  {
+    providedIn: 'root',
+    factory: () => 'http://localhost/test:5000'
+  });

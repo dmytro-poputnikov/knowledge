@@ -1,0 +1,25 @@
+Według dokumentacji należy skorzystać z tej własności wtedy,
+ gdy tworzona zależność jest kombinacją wstrzykniętych serwisów i stanu aplikacji. 
+ Fabryka jest funkcją, która zwraca wartość. Przykładowo:
+
+{
+    provide: MY_DEPENDENCY_TOKEN,
+    useFactory: myDependencyFactor(true),
+    deps: [DataService]
+}
+
+Zauważmy, że w trakcie rejestracji przekazujemy do fabryki argument zależny od stanu aplikacji. 
+W tym przypadku jest to true – mógłby to być na przykład parametr ustawiany w trakcie budowania aplikacji,
+oznaczający czy aplikacja jest w trybie debug, czy nie, ale równie dobrze może to być dowolna wartość,
+obiekt… cokolwiek. Dodatkowo fabryka wymaga też zależności zarejestrowanych w Angularze (DataService).
+Nasza myDependencyFactory wygląda tak:
+
+export function myDependencyFactory(isDebug) {  
+    return (dataService: DataService) => {
+        if (isDebug) {
+            …
+        } else {
+            …
+        }
+    };
+}

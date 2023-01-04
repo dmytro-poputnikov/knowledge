@@ -1,0 +1,16 @@
+class Couse{
+    constructor(
+        private _title: string
+    )
+
+set title(newTitle: string){
+    if(!newTitle){
+        throw "Error"
+    }
+
+    this._title = newTitle;
+}
+
+get ..
+
+}

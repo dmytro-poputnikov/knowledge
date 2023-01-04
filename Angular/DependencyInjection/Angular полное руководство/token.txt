@@ -1,0 +1,11 @@
+/** Объявление токена */
+export const API_URL_TOKEN = new InjectionToken<string>('API_URL'); 
+
+// регистрация
+providers: [
+  {
+    provide: API_URL_TOKEN, 
+    /* тут будет вариант подстановки зависимости */
+  },
+  /* Другие провайдеры */
+]

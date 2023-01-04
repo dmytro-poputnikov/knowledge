@@ -1,0 +1,10 @@
+@SkipSelf()
+
+Этот декоратор пропускает зарегистрированную зависимость у самого компонента и ищет зависимость выше по иерархии.
+
+export class CarComponent
+{
+  constructor(@SkipSelf() public options: OptionsService)
+  {
+  }
+}

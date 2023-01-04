@@ -1,0 +1,15 @@
+https://stackoverflow.com/questions/35923744/pass-enums-in-angular2-view-templates
+
+export enum DropdownType {
+
+    instrument = 0,
+    account = 1,
+    currency = 2
+}
+
+@Component({selector: '[.Dropdown]',})
+export class Dropdown {
+
+    @Input() public set dropdownType(value: any) {console.log(`-- dropdownType: ${value}`);};
+
+}

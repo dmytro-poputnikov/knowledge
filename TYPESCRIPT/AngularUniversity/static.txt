@@ -1,0 +1,18 @@
+class Course {
+    static TOTAL_COURSES = 0;
+    //private static TOTAL_COURSES = 0;
+    //static readonly TOTAL_COURSES = 0;
+
+    constructor(){
+        Course.TOTAL_COURSES++;
+    }
+
+    !!cant use this.TOTAL_COURSES
+
+    private static printTitle(course: Course){
+        console.log(`asdsad ${course.title}`)
+    }
+}
+
+Course.TOTAL_COURSES
+

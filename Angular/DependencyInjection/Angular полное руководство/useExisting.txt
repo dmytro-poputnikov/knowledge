@@ -1,0 +1,114 @@
+useExisting
+
+Этот вариант наиболее непонятный для новичка. Суть useExisting заключается в том, 
+что выбирается уже существующая зависимость.
+
+providers: [
+  { provide: 'CarService1', useClass: CarService},
+  { provide: 'CarService2', useExisting: 'CarService1' }, 
+  /* Другие провайдеры */
+]
+Сразу отвечу на первый же вопрос – почему мы не должны написать код так:
+
+providers: [
+  { provide: 'CarService1', useClass: CarService },
+  { provide: 'CarService2', useClass: CarService },
+  /* Другие провайдеры */
+]
+
+Этот вариант регистрация зависимости создаст нам два экземпляра CarService.
+Что может доставить много не удобств при отладке, т.к. сервис часто хранит состояние, 
+в результате чего произойдёт так называемый сайд-эффект.
+
+ При работе с компонентом экземпляр компонента регистрируется в «Контейнере зависимостей», таким образом легко получить доступ для родительского компонента.
+
+/** Родительский компонент "Машина" */
+@Component({
+  selector: 'car-di',
+  template: `
+  <p>car-di works!</p>
+  <wheels-di ad-car></wheels-di>`
+})
+export class CarComponent
+{
+  constructor() { }
+}
+
+/** Дочерний компонент "Колёса машины" демонстрирует через DI получаем доступ к родительскому компоненту */
+@Component({
+  selector: 'wheels-di',
+  template: `<p>wheels works!</p>`
+})
+export class WheelsComponent
+{
+  /**
+   * Конструктор, в котором получаем DI аргументы
+   * @param car Родительский компонент "Машина"
+   */
+  constructor(public car: CarComponent) { }
+} 
+
+/** Директива демонстрирует доступ к родительским компонентам по средствам DI */
+@Directive({ selector: '[ad-car]' })
+export class CarDirective
+{
+  /**
+   * Конструктор, в котором получаем DI аргументы
+   * @param wheels Родительский компонент "Колёса"
+   * @param car Родительский -> Родительский компонент "Колёса"
+   */
+  constructor(wheels: WheelsComponent, car: CarComponent)
+  {
+  }
+}
+Разработчики часто пишут универсальные директивы, которые можно использовать в разных компонентах. Поэтому необходимо получить доступ к компоненту по универсальному ключу, а дальше работать с базовым интерфейсом компонента. Для этого нужно использовать регистрацию зависимости useExisting c реализацией forwardRef
+
+/** Общий интерфейс */
+export interface IUniversal
+{
+  /** Марка */
+  name: string;
+  /** Масса */
+  weight: number;
+} 
+
+/** Токен для роботы в DI */
+export const UNIVERSAL_TOKEN = new InjectionToken<IUniversal>('UNIVERSAL_TOKEN'); 
+
+/** Дочерний компонент "Колёса машины" демонстрирует регистрацию зависимости для специального токена, в качестве зависимости выступает сам компонент */
+@Component({
+  selector: 'wheels-universal-di',
+  template: `<p>wheels works!</p>`,
+  providers:[
+    { provide: UNIVERSAL_TOKEN, useExisting: forwardRef(() => WheelsComponent), multi: true }
+  ]
+})
+export class WheelsComponent implements IUniversal
+{
+  /** Марка, от интерфейса IUniversal */
+  public name = 'no-name';
+  /** Масса, от интерфейса IUniversal */
+  public weight = 10; 
+
+  /**
+   * Конструктор, в котором получаем DI аргументы
+   * @param car Родительский компонент "Машина"
+   */
+  constructor(public car: CarComponent) { }
+} 
+
+/** Получаем доступ к родительскому компоненту используя базовый интерфейс. Соответственно эта директива может работать со всеми компонентами, реализующих UNIVERSAL_TOKEN */
+@Directive({ selector: '[ad-universal]' })
+export class UniversalDirective
+{
+  /**
+   * Конструктор
+   * @param universal объект с базовой реализацией интер
+   */
+  constructor(@Inject(UNIVERSAL_TOKEN) universal: IUniversal) { }
+}
+forwardRef позволяет обратиться к ещё не зарегистрированной зависимости. Из примера понятно, что в коде декоратора сам компонент ещё не был зарегистрирован в контейнере зависимостей. 
+
+Такая же реализация помогает решить задачу получения события загрузки компонента. Ссылка на видео: https://youtu.be/097plGqjP0U
+
+Кроме того, самая часто встречающая реализация — это ngModel. Это тема для отдельной статьи.

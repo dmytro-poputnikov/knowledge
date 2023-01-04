@@ -1,0 +1,7 @@
+export declare Type CardSize = 'large' | 'default' | 'small';
+
+@Input() public size: CardSize = 'default';
+
+cardSize Size = {
+    [key in CardSize]: string;
+}

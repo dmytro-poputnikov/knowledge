@@ -1,0 +1,69 @@
+Source: https://www.youtube.com/watch?v=oILc0ywDVTk
+
+Instruction:
+https://kauri.io/#install-raspbian-operating-system-and-prepare-the-system-for-kubernetes/7df2a9f9cf5f4f6eb217aa7223c01594/a
+
+scp pi@192.168.1.28:/etc/rancher/k3s/k3s.yaml %userprofile%/.kube/config
+
+https://forums.raspberrypi.com/viewtopic.php?t=73019
+
+
+
+https://www.addictedtotech.net/installing-nextcloud-on-raspberry-pi-4/
+https://www.addictedtotech.net/how-to-install-openmediavault-5-on-raspberry-pi-4-episode-5/
+
+OMV uses systemd-networkd and removes dhcpcd on installation.
+
+Network configuration - /etc/netplan
+
+This should be used to configure the network including setting IP addresses and (from what I remember) has methods to facilitate this.
+
+If you install another network manager the results will be unpredictable.
+
+
+
+
+
+
+////////////////////
+1) Install docker
+https://docs.ranchermanager.rancher.io/v2.5/getting-started/installation-and-upgrade/installation-requirements/install-docker
+
+https://ubuntu.pkgs.org/22.04/ubuntu-proposed-main-arm64/linux-modules-extra-raspi_5.15.0.1018.17_arm64.deb.html
+https://blog.differentpla.net/blog/2021/12/20/k3s-ubuntu-reinstall/
+https://www.padok.fr/en/blog/raspberry-kubernetes#Install_the_OS_for_your_Raspberry_Pi
+
+
+
+2)https://docs.ranchermanager.rancher.io/v2.5/reference-guides/single-node-rancher-in-docker/advanced-options#persistent-data
+
+docker run -d --restart=unless-stopped \
+  -p 80:80 -p 443:443 \
+  -v /opt/rancher:/var/lib/rancher \
+  --privileged \
+  rancher/rancher:latest
+
+https://github.com/rancher/rancher/issues/36238
+
+I had this issue on Ubuntu 22.04 i fixed it by editing /etc/default/grub file. Added these values into GRUB_CMDLINE_LINUX:
+
+GRUB_CMDLINE_LINUX="cgroup_memory=1 cgroup_enable=memory swapaccount=1 systemd.unified_cgroup_hierarchy=0"
+
+then did:
+
+sudo update-grub
+sudo reboot
+
+
+3)
+
+
+https://www.linuxserver.io/
+
+/////////////
+
+DELETE ALL
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)

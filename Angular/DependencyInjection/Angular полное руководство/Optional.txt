@@ -1,0 +1,10 @@
+@Optional()
+
+export class CarComponent
+{
+  constructor(@Optional() public options: OptionsService)
+  {
+  }
+}
+Если зависимость OptionsService не найдена, то options === null никаких ошибок сгенерировано не будет. 
+Так же этот декоратор можно применять с любыми другими декораторами уровня доступа.

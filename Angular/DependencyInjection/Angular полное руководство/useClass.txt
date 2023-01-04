@@ -1,0 +1,8 @@
+useClass
+
+Это самый простой вариант, который заключается в том, что для реализации указывается класс.
+
+providers: [
+  { provide: OptionsService, useClass: OptionsService },
+  /* Другие провайдеры */
+]

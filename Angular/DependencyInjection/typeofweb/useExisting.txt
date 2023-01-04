@@ -1,0 +1,26 @@
+useExisting - tworzenie aliasów
+
+DI w Angular 2 umożliwia również tworzenie aliasów zależności. 
+
+Jednym z zastosowań jest przysłanianie pewnych metod w zależności od sposobu wstrzyknięcia. 
+Przykładem może być stworzenie wersji serwisu „tylko do odczytu”. Pod spodem nadal jest to ten sam serwis, 
+jednak w zależności od tego co wstrzykujemy, otrzymujemy dostęp tylko do pewnych metod:
+
+class DataService {  
+    private data: Array<string>;
+    add(value:string) {
+        this.data.push(value);
+    }
+    getLast():string {
+        return this.data[this.data.length - 1];
+    }
+}
+
+abstract class ReadonlyDataService {  
+    getLast: () => string;
+}
+
+{ provide: ReadonlyDataService, useExisting: DataService }
+
+Jeśli teraz wstrzykniemy ReadonlyDataService, będziemy mieli dostęp tylko do metody getLast – mimo, 
+że w rzeczywistości będziemy pracować na instancji klasy DataService.

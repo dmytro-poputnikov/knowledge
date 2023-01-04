@@ -1,0 +1,5 @@
+constructore(
+    private title: string
+)
+
+can be mutated in class

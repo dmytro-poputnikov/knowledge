@@ -1,0 +1,13 @@
+if parent class has method as private new class cant modify it;
+
+for that we use protected
+
+protected validate(){
+
+}
+
+
+
+constructor( 
+    protected _title: string
+)

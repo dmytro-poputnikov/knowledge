@@ -1,0 +1,8 @@
+useValue - wartości
+
+Dodanie do obiektu własności useValue pozwala na podmianę zależności na konkretną wartość.
+Jest to bardzo przydatne w przypadku konfigurowania wartości, które zależą od informacji dostępnych 
+dopiero w trakcie uruchamiania aplikacji – przykładowo adres strony. Dodatkowo useValue przydaje się w trakcie
+pisania testów jednostkowych, gdyż pozwala w łatwy sposób podmienić zależność na jej mock:
+
+{ provide: DataService, useValue: dataServiceMock }

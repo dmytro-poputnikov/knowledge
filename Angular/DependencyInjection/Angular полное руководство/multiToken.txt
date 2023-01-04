@@ -1,0 +1,13 @@
+Регистрация нескольких зависимостей с одинаковым ключом
+ Так же хотелось бы обратить внимание на дополнительное свойство multi. Приведу пример, который часто может быть необходим:
+
+{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService1, multi: true },
+
+{ provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService2, multi: true }
+Если не указывать свойство multi, то в результате бы работал только HttpInterceptorService2. Свойство multi даёт нам возможность, чтобы одна зависимость не переписывала другу, если ключ совпадает, а накапливала зависимости в массиве.
+
+И если получить зависимость по ключу, то в результате будет массив зависимостей.
+
+const interceptors = injector.get(HTTP_INTERCEPTORS);
+
+// interceptors = [экземпляр HttpInterceptorService1, экземпляр HttpInterceptorService2]

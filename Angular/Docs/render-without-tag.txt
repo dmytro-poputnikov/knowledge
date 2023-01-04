@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/52169086/angular2-render-a-component-without-any-wrapping-tag-at-all

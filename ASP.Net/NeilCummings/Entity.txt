@@ -1,0 +1,8 @@
+dotnet ef database drop -p Infrastructure -s API
+dotnet ef migrations remove -p Infrastructure -s API
+dotnet ef migrations add InitialCreate -p Infrastructure -s API -o Data/Migrations
+dotnet ef database update -p Infrastructure -s API
+
+Revert:
+dotnet ef database migrations list 
+dotnet ef database update NameOfYourMigration

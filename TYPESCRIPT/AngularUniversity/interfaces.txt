@@ -1,0 +1,12 @@
+export interface HasId{
+    id: string;
+    printId(); //same to abstract
+}
+
+export interface HasTitle extends HasId {
+    title: string;
+}
+
+abstract class Course implement HasId
+
+abstract class Course implement HasTitle
